@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guide Administrateur - Médiathèque TLN</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1>📚 Médiathèque TLN</h1>
+                <p class="subtitle">Guide d'utilisation du panel d'administration</p>
+            </div>
+            <div class="header-meta">
+                <span class="version">Version 1.0</span>
+                <span class="date">Octobre 2025</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3>Table des matières</h3>
+        </div>
+        <ul class="nav-list">
+            <li><a href="#introduction">1. Introduction</a></li>
+            <li><a href="#schema-bdd" style="padding-left: 20px;">📊 Schéma de la base de données</a></li>
+            <li><a href="#connexion">2. Connexion</a></li>
+            <li><a href="#tableau-de-bord">3. Tableau de Bord</a></li>
+            <li><a href="#utilisateurs">4. Gestion des Utilisateurs</a></li>
+            <li><a href="#medias">5. Gestion des Médias</a></li>
+            <li><a href="#emprunts">6. Gestion des Emprunts</a></li>
+            <li><a href="#messages">7. Messages de Contact</a></li>
+            <li><a href="#genres">8. Gestion des Genres</a></li>
+            <li><a href="#bonnes-pratiques">9. Bonnes Pratiques</a></li>
+            <li><a href="#faq">10. FAQ et Dépannage</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+
+            <!-- Section 1: Introduction -->
+            <section id="introduction" class="section">
+                <h2>1. Introduction</h2>
+
+                <div class="subsection">
+                    <h3>1.1 À propos de ce guide</h3>
+                    <p>Ce guide a été conçu pour vous accompagner dans l'utilisation quotidienne du panel d'administration de votre médiathèque. Vous y trouverez toutes les informations nécessaires pour gérer efficacement votre catalogue de médias, vos utilisateurs et vos opérations.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3>1.2 Prérequis</h3>
+                    <p>Pour utiliser le panel d'administration, vous devez :</p>
+                    <ul>
+                        <li>Disposer d'un compte administrateur (créé par le développeur)</li>
+                        <li>Avoir accès à un navigateur web moderne (Chrome, Firefox, Safari, Edge)</li>
+                        <li>Être connecté à Internet</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>1.3 Vue d'ensemble des fonctionnalités</h3>
+                    <div class="feature-grid">
+                        <div class="feature-card">
+                            <span class="feature-icon">📊</span>
+                            <h4>Statistiques</h4>
+                            <p>Visualisez les données clés de votre médiathèque</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">👥</span>
+                            <h4>Utilisateurs</h4>
+                            <p>Gérez les comptes utilisateurs</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">📚</span>
+                            <h4>Catalogue</h4>
+                            <p>Ajoutez et modifiez livres, films et jeux</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">📅</span>
+                            <h4>Emprunts</h4>
+                            <p>Suivez les emprunts et retards</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">📧</span>
+                            <h4>Messages</h4>
+                            <p>Consultez les demandes de contact</p>
+                        </div>
+                        <div class="feature-card">
+                            <span class="feature-icon">🏷️</span>
+                            <h4>Genres</h4>
+                            <p>Enrichissez les catégories</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="subsection" id="schema-bdd">
+                    <h3>1.4 Architecture de la base de données</h3>
+                    <p>Voici le schéma de la base de données de votre médiathèque. Ce diagramme vous permet de comprendre comment les différentes tables sont reliées entre elles :</p>
+                    <div style="text-align: center; margin: 2rem 0;">
+                        <img src="php_mvc_app_shema_database.png" alt="Schéma de la base de données" style="max-width: 100%; height: auto; border: 1px solid #ddd; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                    </div>
+                    <p><strong>Tables principales :</strong></p>
+                    <ul>
+                        <li><strong>users</strong> : Gère les comptes utilisateurs et administrateurs</li>
+                        <li><strong>medias</strong> : Catalogue des livres, films et jeux</li>
+                        <li><strong>books, movies, games</strong> : Informations spécifiques à chaque type de média</li>
+                        <li><strong>borrows</strong> : Suivi des emprunts et retours</li>
+                        <li><strong>contacts</strong> : Messages de contact</li>
+                        <li><strong>genres</strong> : Catégories de médias</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Section 2: Connexion -->
+            <section id="connexion" class="section">
+                <h2>2. Connexion au Panel d'Administration</h2>
+
+                <div class="subsection">
+                    <h3>2.1 Accéder à la page de connexion</h3>
+                    <ol>
+                        <li>Ouvrez votre navigateur web</li>
+                        <li>Accédez à l'URL : <code>votre-site.com/auth/login</code></li>
+                        <li>Vous arrivez sur la page de connexion</li>
+                    </ol>
+                </div>
+
+                <div class="subsection">
+                    <h3>2.2 Se connecter</h3>
+                    <ol>
+                        <li><strong>Email</strong> : Saisissez l'adresse email de votre compte administrateur</li>
+                        <li><strong>Mot de passe</strong> : Saisissez votre mot de passe</li>
+                        <li>Cliquez sur le bouton <strong>"Se connecter"</strong></li>
+                    </ol>
+                    <div class="alert alert-warning">
+                        <strong>⚠️ Sécurité :</strong> Après 2 heures d'inactivité, vous serez automatiquement déconnecté pour des raisons de sécurité.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>2.3 Accéder au panel d'administration</h3>
+                    <p>Une fois connecté avec un compte administrateur, vous pouvez accéder au panel via :</p>
+                    <ul>
+                        <li>L'URL : <code>votre-site.com/admin/dashboard</code></li>
+                        <li>Le menu de navigation (si disponible dans votre interface)</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Section 3: Tableau de Bord -->
+            <section id="tableau-de-bord" class="section">
+                <h2>3. Tableau de Bord</h2>
+
+                <div class="subsection">
+                    <h3>3.1 Vue d'ensemble</h3>
+                    <p>Le tableau de bord est la page d'accueil de votre panel d'administration. Il affiche en un coup d'œil les statistiques clés de votre médiathèque.</p>
+                    <p><strong>URL d'accès :</strong> <code>/admin/dashboard</code></p>
+                </div>
+
+                <div class="subsection">
+                    <h3>3.2 Statistiques affichées</h3>
+                    <p>Le tableau de bord présente 5 indicateurs principaux :</p>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Indicateur</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Total Utilisateurs</strong></td>
+                                <td>Nombre total d'utilisateurs enregistrés</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Médias</strong></td>
+                                <td>Nombre total de médias dans le catalogue</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Livres</strong></td>
+                                <td>Nombre de livres disponibles</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Films</strong></td>
+                                <td>Nombre de films disponibles</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Total Jeux</strong></td>
+                                <td>Nombre de jeux vidéo disponibles</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="subsection">
+                    <h3>3.3 Graphiques</h3>
+                    <p>Des graphiques à barres visualisent la répartition de vos médias par type, facilitant l'analyse de votre inventaire.</p>
+                </div>
+            </section>
+
+            <!-- Section 4: Utilisateurs -->
+            <section id="utilisateurs" class="section">
+                <h2>4. Gestion des Utilisateurs</h2>
+
+                <div class="subsection">
+                    <h3>4.1 Accéder à la liste des utilisateurs</h3>
+                    <p><strong>URL d'accès :</strong> <code>/admin/users</code></p>
+                    <p>Cette page affiche tous les utilisateurs enregistrés sur votre plateforme.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3>4.2 Informations affichées</h3>
+                    <p>Pour chaque utilisateur, vous verrez :</p>
+                    <ul>
+                        <li><strong>ID</strong> : Identifiant unique</li>
+                        <li><strong>Nom complet</strong> : Prénom + Nom</li>
+                        <li><strong>Email</strong> : Adresse email de contact</li>
+                        <li><strong>Rôle</strong> : Badge "Admin" ou "Utilisateur"</li>
+                        <li><strong>Date d'inscription</strong> : Date de création du compte</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>4.3 Rechercher un utilisateur</h3>
+                    <ol>
+                        <li>Utilisez la barre de recherche en haut de la liste</li>
+                        <li>Tapez le nom ou l'email de l'utilisateur recherché</li>
+                        <li>Les résultats se filtrent automatiquement en temps réel</li>
+                    </ol>
+                </div>
+
+                <div class="subsection">
+                    <h3>4.4 Supprimer un utilisateur</h3>
+                    <div class="alert alert-danger">
+                        <strong>⚠️ Attention :</strong> Cette action est irréversible !
+                    </div>
+                    <p><strong>Conditions pour supprimer un utilisateur :</strong></p>
+                    <ul class="checklist">
+                        <li>L'utilisateur ne doit pas avoir d'emprunts en cours</li>
+                        <li>Vous ne pouvez pas supprimer votre propre compte</li>
+                    </ul>
+                    <p><strong>Procédure :</strong></p>
+                    <ol>
+                        <li>Localisez l'utilisateur dans la liste</li>
+                        <li>Cliquez sur le bouton <strong>"Supprimer"</strong></li>
+                        <li>Confirmez l'action</li>
+                        <li>L'utilisateur est supprimé définitivement</li>
+                    </ol>
+                    <div class="alert alert-info">
+                        <strong>💡 Astuce :</strong> Si un message d'erreur indique que l'utilisateur a des emprunts actifs, vous devez d'abord forcer le retour de ses emprunts.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>4.5 Modifier un utilisateur</h3>
+                    <div class="alert alert-info">
+                        <strong>ℹ️ Note :</strong> Cette fonctionnalité est actuellement en développement.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 5: Médias -->
+            <section id="medias" class="section">
+                <h2>5. Gestion des Médias</h2>
+
+                <div class="subsection">
+                    <h3>5.1 Consulter le catalogue</h3>
+                    <p><strong>URL d'accès :</strong> <code>/admin/medias</code></p>
+                    <p>Cette page liste tous les médias disponibles dans votre médiathèque.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3>5.2 Informations affichées</h3>
+                    <p>Pour chaque média, vous verrez :</p>
+                    <ul>
+                        <li>Image de couverture</li>
+                        <li><strong>ID</strong> : Identifiant unique</li>
+                        <li><strong>Titre</strong> : Nom du média</li>
+                        <li><strong>Type</strong> : Livre, Film ou Jeu</li>
+                        <li><strong>Genre</strong> : Catégorie (Action, Science-Fiction, etc.)</li>
+                        <li><strong>Stock</strong> : Nombre d'exemplaires disponibles</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>5.3 Ajouter un nouveau média</h3>
+
+                    <h4>5.3.1 Accéder au formulaire</h4>
+                    <p><strong>URL d'accès :</strong> <code>/admin/add_media</code></p>
+
+                    <h4>5.3.2 Remplir les informations communes</h4>
+                    <p>Tous les médias nécessitent les champs suivants :</p>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Champ</th>
+                                <th>Description</th>
+                                <th>Obligatoire</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Titre</strong></td>
+                                <td>Nom du média</td>
+                                <td><span class="badge badge-required">Oui</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Type</strong></td>
+                                <td>Livre / Film / Jeu</td>
+                                <td><span class="badge badge-required">Oui</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Genre</strong></td>
+                                <td>Sélectionner dans la liste</td>
+                                <td><span class="badge badge-required">Oui</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Stock</strong></td>
+                                <td>Nombre d'exemplaires (≥0)</td>
+                                <td><span class="badge badge-required">Oui</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Date de publication</strong></td>
+                                <td>Date de sortie</td>
+                                <td><span class="badge badge-required">Oui</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>Image de couverture</strong></td>
+                                <td>URL ou fichier uploadé</td>
+                                <td><span class="badge badge-optional">Non</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <p><strong>Pour l'image de couverture</strong>, vous avez 2 options :</p>
+                    <ul>
+                        <li><strong>Option 1</strong> : Saisir une URL (lien vers une image en ligne)</li>
+                        <li><strong>Option 2</strong> : Uploader un fichier depuis votre ordinateur (JPG, PNG, GIF)</li>
+                    </ul>
+
+                    <h4>5.3.3 Informations spécifiques aux LIVRES</h4>
+                    <p>Si vous sélectionnez <strong>Type = Livre</strong>, remplissez également :</p>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Champ</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Auteur</strong></td>
+                                <td>Nom de l'auteur</td>
+                            </tr>
+                            <tr>
+                                <td><strong>ISBN</strong></td>
+                                <td>Code ISBN (alphanumérique)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Nombre de pages</strong></td>
+                                <td>Nombre de pages du livre</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Année de publication</strong></td>
+                                <td>Année de sortie</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Résumé</strong></td>
+                                <td>Description du livre</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>5.3.4 Informations spécifiques aux FILMS</h4>
+                    <p>Si vous sélectionnez <strong>Type = Film</strong>, remplissez également :</p>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Champ</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Réalisateur</strong></td>
+                                <td>Nom du réalisateur</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Durée</strong></td>
+                                <td>Durée en minutes</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Année</strong></td>
+                                <td>Année de sortie</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Classification</strong></td>
+                                <td>Âge minimum recommandé</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Synopsis</strong></td>
+                                <td>Description du film</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>5.3.5 Informations spécifiques aux JEUX</h4>
+                    <p>Si vous sélectionnez <strong>Type = Jeu</strong>, remplissez également :</p>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Champ</th>
+                                <th>Description</th>
+                                <th>Valeurs possibles</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Éditeur</strong></td>
+                                <td>Société éditrice</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Plateforme</strong></td>
+                                <td>Console/PC</td>
+                                <td>PC, PlayStation, Xbox, Nintendo, Mobile</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Âge minimum</strong></td>
+                                <td>Classification PEGI</td>
+                                <td>3, 7, 12, 16, 18</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Description</strong></td>
+                                <td>Présentation du jeu</td>
+                                <td>-</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Date de sortie</strong></td>
+                                <td>Date de sortie</td>
+                                <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>5.3.6 Validation et enregistrement</h4>
+                    <ol>
+                        <li>Vérifiez que tous les champs obligatoires sont remplis</li>
+                        <li>Cliquez sur <strong>"Ajouter"</strong> ou <strong>"Enregistrer"</strong></li>
+                        <li>Si tout est correct, vous êtes redirigé vers la liste des médias</li>
+                        <li>Votre nouveau média apparaît dans le catalogue</li>
+                    </ol>
+                    <div class="alert alert-success">
+                        <strong>✅ Succès :</strong> Un message de confirmation s'affiche en cas de succès.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>5.4 Modifier un média existant</h3>
+
+                    <h4>5.4.1 Accéder au formulaire de modification</h4>
+                    <ol>
+                        <li>Allez sur <code>/admin/medias</code></li>
+                        <li>Localisez le média à modifier</li>
+                        <li>Cliquez sur le bouton <strong>"Modifier"</strong></li>
+                        <li>Vous êtes redirigé vers <code>/admin/edit_media/{id}</code></li>
+                    </ol>
+
+                    <h4>5.4.2 Modifier les informations</h4>
+                    <p>Le formulaire de modification est identique au formulaire d'ajout :</p>
+                    <ul>
+                        <li>Tous les champs sont pré-remplis avec les valeurs actuelles</li>
+                        <li>Modifiez les champs souhaités</li>
+                        <li>Pour l'image, vous pouvez :
+                            <ul>
+                                <li>Conserver l'image actuelle</li>
+                                <li>Uploader une nouvelle image</li>
+                                <li>Remplacer par une URL</li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h4>5.4.3 Enregistrer les modifications</h4>
+                    <ol>
+                        <li>Cliquez sur <strong>"Mettre à jour"</strong> ou <strong>"Enregistrer"</strong></li>
+                        <li>Les modifications sont appliquées immédiatement</li>
+                        <li>Vous êtes redirigé vers la liste des médias</li>
+                    </ol>
+                </div>
+
+                <div class="subsection">
+                    <h3>5.5 Supprimer un média</h3>
+                    <div class="alert alert-danger">
+                        <strong>⚠️ Attention :</strong> Cette action est irréversible et supprime également l'image uploadée !
+                    </div>
+                    <p><strong>Procédure :</strong></p>
+                    <ol>
+                        <li>Allez sur <code>/admin/medias</code></li>
+                        <li>Localisez le média à supprimer</li>
+                        <li>Cliquez sur <strong>"Supprimer"</strong></li>
+                        <li>Confirmez l'action</li>
+                        <li>Le média et son image sont supprimés du serveur</li>
+                    </ol>
+                    <div class="alert alert-info">
+                        <strong>💡 Note :</strong> Le système supprime automatiquement les fichiers images associés pour libérer de l'espace.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 6: Emprunts -->
+            <section id="emprunts" class="section">
+                <h2>6. Gestion des Emprunts</h2>
+
+                <div class="subsection">
+                    <h3>6.1 Accéder à la gestion des emprunts</h3>
+                    <p><strong>URL d'accès :</strong> <code>/admin/borrows</code></p>
+                    <p>Cette section vous permet de suivre tous les emprunts effectués sur votre plateforme.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3>6.2 Statistiques des emprunts</h3>
+                    <p>En haut de page, vous trouverez 3 indicateurs clés :</p>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Indicateur</th>
+                                <th>Signification</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Total des emprunts</strong></td>
+                                <td>Nombre total d'emprunts (tous statuts confondus)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Emprunts actifs</strong></td>
+                                <td>Emprunts en cours (non retournés)</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Emprunts en retard</strong></td>
+                                <td>Emprunts dont la date de retour est dépassée</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="subsection">
+                    <h3>6.3 Informations affichées</h3>
+                    <p>Pour chaque emprunt, vous verrez :</p>
+                    <ul>
+                        <li><strong>ID de l'emprunt</strong> : Identifiant unique</li>
+                        <li><strong>Utilisateur</strong> : Nom et email de l'emprunteur</li>
+                        <li><strong>Média</strong> : Titre et type du média emprunté</li>
+                        <li><strong>Genre</strong> : Catégorie du média</li>
+                        <li><strong>Date d'emprunt</strong> : Quand l'emprunt a été effectué</li>
+                        <li><strong>Date de retour prévue</strong> : Date limite de retour</li>
+                        <li><strong>Date de retour réelle</strong> : Quand le média a été rendu (vide si toujours emprunté)</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>6.4 Forcer le retour d'un média</h3>
+                    <p>Si un utilisateur ne retourne pas un média ou en cas de besoin :</p>
+                    <p><strong>Procédure :</strong></p>
+                    <ol>
+                        <li>Localisez l'emprunt dans la liste</li>
+                        <li>Cliquez sur le bouton <strong>"Forcer le retour"</strong></li>
+                        <li>Le système enregistre automatiquement :
+                            <ul>
+                                <li>La date de retour = aujourd'hui</li>
+                                <li>Met à jour la disponibilité du média</li>
+                                <li>Incrémente le stock disponible</li>
+                            </ul>
+                        </li>
+                    </ol>
+                    <div class="alert alert-info">
+                        <strong>💡 Utilisation :</strong> Utile pour les retours physiques non enregistrés par l'utilisateur.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>6.5 Identifier les retards</h3>
+                    <p>Les emprunts en retard sont ceux dont la <strong>Date de retour prévue</strong> est passée et la <strong>Date de retour réelle</strong> est vide.</p>
+                    <p><strong>Bonnes pratiques :</strong></p>
+                    <ul>
+                        <li>Consultez régulièrement les emprunts en retard</li>
+                        <li>Contactez les utilisateurs concernés (via leurs emails affichés)</li>
+                        <li>Utilisez la fonction "Forcer le retour" si nécessaire</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Section 7: Messages -->
+            <section id="messages" class="section">
+                <h2>7. Gestion des Messages de Contact</h2>
+
+                <div class="subsection">
+                    <h3>7.1 Accéder aux messages</h3>
+                    <p><strong>URL d'accès :</strong> <code>/admin/contacts</code></p>
+                    <p>Cette section centralise tous les messages envoyés via le formulaire de contact de votre site.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3>7.2 Statistiques des messages</h3>
+                    <p>En haut de page :</p>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Indicateur</th>
+                                <th>Signification</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><strong>Total des messages</strong></td>
+                                <td>Nombre total de messages reçus</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Messages non lus</strong></td>
+                                <td>Messages n'ayant pas encore été consultés</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="subsection">
+                    <h3>7.3 Informations affichées</h3>
+                    <p>Pour chaque message, vous verrez :</p>
+                    <ul>
+                        <li><strong>ID</strong> : Identifiant unique</li>
+                        <li><strong>Nom</strong> : Nom de l'expéditeur</li>
+                        <li><strong>Email</strong> : Email de contact</li>
+                        <li><strong>Message</strong> : Contenu du message</li>
+                        <li><strong>Date</strong> : Date et heure d'envoi</li>
+                        <li><strong>Statut</strong> : Lu / Non lu</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>7.4 Marquer un message comme lu</h3>
+                    <p><strong>Procédure :</strong></p>
+                    <ol>
+                        <li>Localisez le message non lu</li>
+                        <li>Cliquez sur <strong>"Marquer comme lu"</strong></li>
+                        <li>Le statut passe à "Lu"</li>
+                        <li>Le compteur de messages non lus se met à jour automatiquement</li>
+                    </ol>
+                    <div class="alert alert-info">
+                        <strong>💡 Utilisation :</strong> Permet de suivre quels messages ont été traités.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>7.5 Supprimer un message</h3>
+                    <div class="alert alert-danger">
+                        <strong>⚠️ Attention :</strong> Suppression définitive !
+                    </div>
+                    <p><strong>Procédure :</strong></p>
+                    <ol>
+                        <li>Cliquez sur le bouton <strong>"Supprimer"</strong></li>
+                        <li>Confirmez l'action</li>
+                        <li>Le message est supprimé de la base de données</li>
+                    </ol>
+                    <div class="alert alert-info">
+                        <strong>💡 Conseil :</strong> Supprimez uniquement les messages résolus ou les spams.
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>7.6 Répondre à un message</h3>
+                    <p>Le système ne dispose pas de fonctionnalité d'envoi d'email intégrée. Pour répondre :</p>
+                    <ol>
+                        <li>Notez l'adresse email affichée</li>
+                        <li>Utilisez votre client email habituel</li>
+                        <li>Rédigez votre réponse</li>
+                        <li>Marquez le message comme "Lu" dans le panel</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- Section 8: Genres -->
+            <section id="genres" class="section">
+                <h2>8. Gestion des Genres</h2>
+
+                <div class="subsection">
+                    <h3>8.1 Accéder à l'ajout de genre</h3>
+                    <p><strong>URL d'accès :</strong> <code>/admin/add_genre</code></p>
+                    <p>Cette fonctionnalité vous permet d'enrichir la liste des genres disponibles pour vos médias.</p>
+                </div>
+
+                <div class="subsection">
+                    <h3>8.2 Ajouter un nouveau genre</h3>
+                    <p><strong>Procédure :</strong></p>
+                    <ol>
+                        <li>Saisissez le nom du genre dans le champ texte</li>
+                        <li><strong>Règles de validation :</strong>
+                            <ul>
+                                <li>Lettres uniquement (accents acceptés)</li>
+                                <li>Espaces autorisés</li>
+                                <li>Tirets (-) autorisés</li>
+                                <li>Exemples valides : "Science-Fiction", "Bande dessinée", "Aventure"</li>
+                            </ul>
+                        </li>
+                        <li>Cliquez sur <strong>"Ajouter"</strong></li>
+                    </ol>
+                </div>
+
+                <div class="subsection">
+                    <h3>8.3 Contraintes et validations</h3>
+                    <p>Le système vérifie automatiquement :</p>
+                    <ul class="checklist">
+                        <li>Le format du nom (lettres, espaces, tirets uniquement)</li>
+                        <li>L'absence de doublons (le genre n'existe pas déjà)</li>
+                        <li>Le genre est enregistré en minuscules pour cohérence</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>8.4 Utilisation des genres</h3>
+                    <p>Une fois ajouté, le nouveau genre apparaît immédiatement dans :</p>
+                    <ul>
+                        <li>Les formulaires d'ajout de média</li>
+                        <li>Les formulaires de modification de média</li>
+                        <li>Les filtres de recherche (si disponibles)</li>
+                    </ul>
+                    <div class="alert alert-info">
+                        <strong>💡 Conseil :</strong> Ajoutez tous les genres dont vous avez besoin avant de créer vos médias.
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 9: Bonnes Pratiques -->
+            <section id="bonnes-pratiques" class="section">
+                <h2>9. Bonnes Pratiques</h2>
+
+                <div class="subsection">
+                    <h3>9.1 Sécurité</h3>
+                    <ul class="checklist">
+                        <li>Ne partagez jamais vos identifiants administrateur</li>
+                        <li>Utilisez un mot de passe fort (min. 8 caractères, majuscules, minuscules, chiffres)</li>
+                        <li>Déconnectez-vous toujours après utilisation, surtout sur ordinateur partagé</li>
+                        <li>Vérifiez régulièrement la liste des utilisateurs administrateurs</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>9.2 Gestion du catalogue</h3>
+                    <ul class="checklist">
+                        <li>Vérifiez les informations avant d'ajouter un média (titre, auteur, ISBN, etc.)</li>
+                        <li>Utilisez des images de qualité et aux bonnes dimensions</li>
+                        <li>Maintenez le stock à jour pour éviter les emprunts impossibles</li>
+                        <li>Créez tous les genres nécessaires avant d'ajouter vos médias</li>
+                        <li>Utilisez des noms de genres cohérents et clairs</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>9.3 Gestion des emprunts</h3>
+                    <ul class="checklist">
+                        <li>Consultez quotidiennement les emprunts en retard</li>
+                        <li>Forcez les retours uniquement après vérification physique</li>
+                        <li>Contactez les utilisateurs en retard par email</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>9.4 Gestion des utilisateurs</h3>
+                    <ul class="checklist">
+                        <li>Ne supprimez un utilisateur qu'après avoir vérifié ses emprunts</li>
+                        <li>Conservez les comptes actifs même si temporairement inactifs</li>
+                        <li>En cas de doute, contactez l'utilisateur avant suppression</li>
+                    </ul>
+                </div>
+
+                <div class="subsection">
+                    <h3>9.5 Communication</h3>
+                    <ul class="checklist">
+                        <li>Répondez rapidement aux messages de contact</li>
+                        <li>Marquez les messages comme "lus" après traitement</li>
+                        <li>Supprimez régulièrement les messages résolus pour clarté</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Section 10: FAQ -->
+            <section id="faq" class="section">
+                <h2>10. FAQ et Dépannage</h2>
+
+                <div class="subsection">
+                    <h3>10.1 Questions fréquentes</h3>
+
+                    <div class="faq-item">
+                        <h4>Q : Je n'arrive pas à supprimer un utilisateur</h4>
+                        <p><strong>R :</strong> Vérifiez que :</p>
+                        <ul>
+                            <li>Vous ne tentez pas de supprimer votre propre compte</li>
+                            <li>L'utilisateur n'a aucun emprunt en cours (forcez les retours si besoin)</li>
+                        </ul>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>Q : Comment supprimer un genre ?</h4>
+                        <p><strong>R :</strong> Cette fonctionnalité n'est pas disponible actuellement. Contactez votre développeur pour une suppression manuelle en base de données.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>Q : Puis-je modifier les informations d'un utilisateur ?</h4>
+                        <p><strong>R :</strong> Cette fonctionnalité est en développement. Pour le moment, contactez votre développeur.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>Q : L'upload d'image ne fonctionne pas</h4>
+                        <p><strong>R :</strong> Vérifiez que :</p>
+                        <ul>
+                            <li>Le fichier est au format JPG, JPEG, PNG ou GIF</li>
+                            <li>La taille du fichier n'est pas excessive (< 5 Mo recommandé)</li>
+                            <li>Les permissions du serveur sont correctes</li>
+                        </ul>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>Q : Comment savoir si un emprunt est en retard ?</h4>
+                        <p><strong>R :</strong> Consultez le compteur "Emprunts en retard" sur <code>/admin/borrows</code>. Un emprunt est en retard si la date de retour prévue est passée et qu'il n'a pas été retourné.</p>
+                    </div>
+
+                    <div class="faq-item">
+                        <h4>Q : Puis-je créer de nouveaux comptes administrateur ?</h4>
+                        <p><strong>R :</strong> Contactez votre développeur pour créer des comptes admin supplémentaires.</p>
+                    </div>
+                </div>
+
+                <div class="subsection">
+                    <h3>10.2 Messages d'erreur courants</h3>
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>Message d'erreur</th>
+                                <th>Cause</th>
+                                <th>Solution</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>"Accès refusé"</td>
+                                <td>Vous n'êtes pas connecté comme admin</td>
+                                <td>Reconnectez-vous avec un compte administrateur</td>
+                            </tr>
+                            <tr>
+                                <td>"Session expirée"</td>
+                                <td>2h d'inactivité écoulées</td>
+                                <td>Reconnectez-vous</td>
+                            </tr>
+                            <tr>
+                                <td>"Genre déjà existant"</td>
+                                <td>Le genre existe déjà en base</td>
+                                <td>Utilisez le genre existant</td>
+                            </tr>
+                            <tr>
+                                <td>"Impossible de supprimer cet utilisateur"</td>
+                                <td>Utilisateur a des emprunts actifs</td>
+                                <td>Forcez les retours avant suppression</td>
+                            </tr>
+                            <tr>
+                                <td>"Champs obligatoires manquants"</td>
+                                <td>Formulaire incomplet</td>
+                                <td>Remplissez tous les champs marqués *</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="subsection">
+                    <h3>10.3 Contact support</h3>
+                    <p>En cas de problème technique non résolu :</p>
+                    <ol>
+                        <li>Notez le message d'erreur exact</li>
+                        <li>Notez ce que vous tentiez de faire</li>
+                        <li>Contactez votre développeur avec ces informations</li>
+                    </ol>
+                </div>
+            </section>
+
+            <!-- Conclusion -->
+            <section class="section conclusion">
+                <h2>Conclusion</h2>
+                <p>Ce guide couvre toutes les fonctionnalités actuelles du panel d'administration. Pour toute question ou suggestion d'amélioration, n'hésitez pas à contacter votre équipe technique.</p>
+                <p class="highlight"><strong>Bon usage de votre médiathèque !</strong></p>
+            </section>
+
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Médiathèque TLN - Groupe 3 | Documentation générée le 25 octobre 2025</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        // Smooth scroll for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Highlight active section in navigation
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const sections = document.querySelectorAll('.section');
+
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                const sectionHeight = section.clientHeight;
+                if (pageYOffset >= sectionTop - 200) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            document.querySelectorAll('.nav-list a').forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === `#${current}`) {
+                    link.classList.add('active');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
