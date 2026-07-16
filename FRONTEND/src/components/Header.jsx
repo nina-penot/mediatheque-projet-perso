@@ -1,24 +1,26 @@
-import { useState } from "react"
+import { useState } from "react";
+import { Link, useLocation } from 'react-router-dom';
 
 export default function Header({ appname }) {
 
     const [is_logged_in, setIsLoggedIn] = useState(false);
     const [is_admin, setIsAdmin] = useState(false);
+    const location = useLocation();
 
     return (
         <header class="header">
             <nav class="navbar">
                 <div class="nav-brand">
-                    <a href="<?php echo url(); ?>">{appname}</a>
+                    <Link to={"/"}>{appname}</Link>
                 </div>
                 <ul class="nav-menu">
-                    <li><a href="<?php echo url(); ?>" class="<?php echo ($current_route === '' || $current_route === 'home' || $current_route === 'home/index') ? 'active' : ''; ?>">Accueil</a></li>
-                    <li><a href="<?php echo url('home/about'); ?>" class="<?php echo ($current_route === 'home/about') ? 'active' : ''; ?>">À propos</a></li>
-                    <li><a href="<?php echo url('media/library'); ?>" class="<?php echo (strpos($current_route, 'media') === 0) ? 'active' : ''; ?>">Medias</a></li>
-                    <li><a href="<?php echo url('home/contact'); ?>" class="<?php echo ($current_route === 'home/contact') ? 'active' : ''; ?>">Contact</a></li>
+                    <li><Link to={"/"} className={location == "" || location == "home" || location == "home/index" && "active"}>Accueil</Link></li>
+                    <li><Link to={"home/about"} className={location == "home/about" && active}>À propos</Link></li>
+                    <li><Link to={"media/library"} className={location == "media/library" && "active"}>Medias</Link></li>
+                    <li><Link to={"home/contact"} className={location == "home/contact" && "active"}>Contact</Link></li>
 
                     {is_logged_in && is_admin &&
-                        <li><a href="<?php echo url('admin/dashboard'); ?>" class="btn-admin">⚙️ Administration</a></li>
+                        <li><Link to={"admin/dashboard"} className="btn-admin">⚙️ Administration</Link></li>
                     }
 
 
@@ -30,10 +32,9 @@ export default function Header({ appname }) {
                             </a></li>
                         </>
                     }
+
                     <li><a href="<?php echo url('auth/login'); ?>">Connexion</a></li>
                     <li><a href="<?php echo url('auth/register'); ?>">Inscription</a></li>
-                    <!-- <li><a href="//*<?php echo url('auth/forgot-password2'); ?>*//">Mot de passe oublié fatima et morad</a></li> -->
-                    <?php endif; ?>
                 </ul>
             </nav>
         </header>
