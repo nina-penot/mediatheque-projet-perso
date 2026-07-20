@@ -3,6 +3,7 @@ import { Link, useLocation } from 'react-router-dom';
 
 export default function Header({ appname }) {
 
+    //A remplacer avec le hook auth
     const [is_logged_in, setIsLoggedIn] = useState(false);
     const [is_admin, setIsAdmin] = useState(false);
     const location = useLocation();
@@ -24,17 +25,19 @@ export default function Header({ appname }) {
                     }
 
 
-                    {is_logged_in &&
+                    {is_logged_in ?
                         <>
-                            <li><a href="<?php echo url('home/profile'); ?>" class="<?php echo ($current_route === 'home/profile') ? 'active' : ''; ?>">Profil</a></li>
-                            <li><a href="<?php echo url('auth/logout'); ?>" class="btn-logout-accueil">
-                                <i class="fas fa-sign-out-alt"></i> Déconnexion
-                            </a></li>
+                            <li><Link to={"home/profile"} className={location == "home/profile" && "active"}>Profil</Link></li>
+                            <li><Link to={"auth/logout"} className="btn-logout-accueil"><i class="fas fa-sign-out-alt"></i> Déconnexion</Link></li>
+                        </>
+                        :
+                        <>
+                            <li><Link to={"auth/login"}>Connexion</Link></li>
+                            <li><Link to={"auth/register"}>Inscription</Link></li>
                         </>
                     }
 
-                    <li><a href="<?php echo url('auth/login'); ?>">Connexion</a></li>
-                    <li><a href="<?php echo url('auth/register'); ?>">Inscription</a></li>
+
                 </ul>
             </nav>
         </header>
