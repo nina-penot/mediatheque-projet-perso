@@ -8,7 +8,7 @@ function App() {
   return (
     <Routes>
       <Route element={<DefaultLayout />}>
-        <Route path='/' element={<Home></Home>}></Route>
+        <Route path='/' element={<Home />}></Route>
       </Route>
     </Routes>
   )

@@ -1,7 +1,7 @@
-export default function Footer(appname, version) {
+export default function Footer({ appname, version }) {
     return (
-        <footer class="footer">
-            <div class="footer-content">
+        <footer className="footer">
+            <div className="footer-content">
                 <p>&copy; {new Date().getFullYear()} {appname}. Tous droits réservés.</p>
                 <p>{version}</p>
             </div>
