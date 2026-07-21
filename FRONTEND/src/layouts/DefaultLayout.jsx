@@ -6,6 +6,9 @@ export default function DefaultLayout() {
     return (
         <>
             <Header appname={"appname"}></Header>
+            <main>
+                <Outlet></Outlet>
+            </main>
             <Footer appname={"appname"} version={"1.0"}></Footer>
         </>
 
