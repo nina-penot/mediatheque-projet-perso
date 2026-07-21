@@ -4,6 +4,10 @@ import Footer from '../components/Footer.jsx';
 
 export default function DefaultLayout() {
     return (
-        <Header></Header>
+        <>
+            <Header appname={"appname"}></Header>
+            <Footer appname={"appname"} version={"1.0"}></Footer>
+        </>
+
     )
 }
